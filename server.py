@@ -49,12 +49,12 @@ class MyWebServer(socketserver.BaseRequestHandler):
                 if self.path[-1] == "/":
                     self.path += "index.html"
                     self.info_list = self.read_file(self.path)
-                    self.request.sendall(bytearray("HTTP/1.1 200 OK\r\nContent-Type: " + self.info_list[0] + "\r\n" + self.info_list[1], "utf-8"))
+                    self.request.sendall(bytearray("HTTP/1.1 200 OK\r\nContent-Type:" + self.info_list[0] + "\n\n" + self.info_list[1], "utf-8"))
                 #check whether a file
                 else:
                     if os.path.isfile(self.path):
                         self.info_list = self.read_file(self.path)
-                        self.request.sendall(bytearray("HTTP/1.1 200 OK\r\nContent-Type: " + self.info_list[0] + "\r\n" + self.info_list[1], "utf-8"))
+                        self.request.sendall(bytearray("HTTP/1.1 200 OK\r\nContent-Type:" + self.info_list[0] + "\n\n" + self.info_list[1], "utf-8"))
                     else: # 301
                         self.request.sendall(bytearray("HTTP/1.1 301 Moved Permanently\r\n",'utf-8'))
 
