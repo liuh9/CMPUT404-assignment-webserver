@@ -41,7 +41,7 @@ class MyWebServer(socketserver.BaseRequestHandler):
         self.its_file = self.separate[1]
 
         if self.its_method != "GET":
-            self.request.sendall(bytearray("HTTP/1.1 405 Method Not Allowed\r\n",'utf-8'))
+            self.request.sendall(bytearray("HTTP/1.1 405 Method Not Allowed\r\nConection: close\r\n",'utf-8'))
         else:
             self.path = "./www" + self.its_file
             #return index.html 
@@ -49,19 +49,19 @@ class MyWebServer(socketserver.BaseRequestHandler):
                 if self.path[-1] == "/":
                     self.path += "index.html"
                     self.info_list = self.read_file(self.path)
-                    self.request.sendall(bytearray("HTTP/1.1 200 OK\r\nContent-Type:" + self.info_list[0] + "\n\n" + self.info_list[1], "utf-8"))
+                    self.request.sendall(bytearray("HTTP/1.1 200 OK\r\nConection: close\r\nContent-Type: " + self.info_list[0] + "\n\n" + self.info_list[1] + "\r\n", "utf-8"))
                 #check whether a file
                 else:
                     if os.path.isfile(self.path):
                         self.info_list = self.read_file(self.path)
-                        self.request.sendall(bytearray("HTTP/1.1 200 OK\r\nContent-Type:" + self.info_list[0] + "\n\n" + self.info_list[1], "utf-8"))
+                        self.request.sendall(bytearray("HTTP/1.1 200 OK\r\nConection: close\r\nContent-Type: " + self.info_list[0] + "\n\n" + self.info_list[1] + "\r\n", "utf-8"))
                     else: # 301
-                        self.request.sendall(bytearray("HTTP/1.1 301 Moved Permanently\r\n",'utf-8'))
+                        self.request.sendall(bytearray("HTTP/1.1 301 Moved Permanently\r\nConection: close\r\n",'utf-8'))
 
 
 
             else:
-                self.request.sendall(bytearray("HTTP/1.1 404 Not Found\r\n", "utf-8"))
+                self.request.sendall(bytearray("HTTP/1.1 404 Not Found\r\nConection: close\r\n", "utf-8"))
     #     check_method()
 
     # def check_method(self):
